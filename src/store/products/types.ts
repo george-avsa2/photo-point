@@ -7,9 +7,11 @@ export interface Product {
   category: string;
 }
 
+export interface CardProduct {id: number, quantity: number}
+
 export interface ProductsState {
   products: Product[];
   status: 'idle' | 'loading' | 'failed';
   error: string | null;
-  selectedProductsIds: number[];
+  selectedProductsIds: CardProduct[];
 }
