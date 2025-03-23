@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router';
-import { Navigation } from '@mui/icons-material';
 import React from 'react';
+import { Navigation } from './Navigation';
 
 const CatalogPage = React.lazy(() => import('./pages/CatalogPage/CatalogPage'));
 const CartPage = React.lazy(() => import('./pages/CardPage/CartPage'));
