@@ -1,36 +1,17 @@
-import { Link, Route, Routes } from 'react-router';
-import CatalogPage from './pages/CatalogPage';
-import CartPage from './pages/CartPage';
-import { useSelector } from 'react-redux';
-import { State } from './store';
+import { Route, Routes } from 'react-router';
+import CatalogPage from './pages/CatalogPage/CatalogPage';
+import CartPage from './pages/CardPage/CartPage';
+import { Navigation } from '@mui/icons-material';
 
 function App() {
-  const selectedProducts = useSelector(
-    (state: State) => state.products?.selectedProductsIds
-  );
-
-  const cardTotalLength = selectedProducts.reduce((totalLength, product) => {
-    return totalLength + product.quantity;
-  }, 0);
-
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Catalog</Link>
-          </li>
-          <li>
-            <Link to="/cart">Cart ({cardTotalLength})</Link>
-          </li>
-        </ul>
-      </nav>
-
+    <>
+      <Navigation />
       <Routes>
         <Route path="/" element={<CatalogPage />} />
         <Route path="/cart" element={<CartPage />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
