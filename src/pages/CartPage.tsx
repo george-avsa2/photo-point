@@ -1,14 +1,34 @@
 import { Button, Typography, Grid, Box, IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { Product } from '../store/products/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { CardProduct } from '../store/products/types';
+import { AppDispatch } from '../store';
+import { changeQuantity, removeFromSelected } from '../store/products';
+import { Add, Remove } from '@mui/icons-material';
 
 const CartPage = () => {
-  const { products } = useSelector((state: any) => state.products);
-  const { selectedProductsIds } = useSelector((state: any) => state.products);
-
-  const selectedProducts = products.filter((product: Product) =>
-    selectedProductsIds.includes(product.id)
+  const { selectedProductsIds: selectedProducts } = useSelector(
+    (state: any) => state.products
   );
+
+  const calculateTotalPrice = () => {
+    return selectedProducts.reduce((total: number, product: CardProduct) => {
+      return total + product.price * product.quantity;
+    }, 0);
+  };
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleQuantityChange = (id: number, quantity: number) => {
+    if (quantity) {
+      dispatch(changeQuantity({ id, quantity }));
+    } else {
+      dispatch(removeFromSelected(id));
+    }
+  };
+
+  const handleRemoveFromCart = (id: number) => {
+    dispatch(removeFromSelected(id));
+  };
 
   return (
     <Box sx={{ padding: '20px' }}>
@@ -19,7 +39,7 @@ const CartPage = () => {
         <Typography>No items in cart</Typography>
       ) : (
         <Grid container spacing={2}>
-          {selectedProducts.map((product: Product) => (
+          {selectedProducts.map((product: CardProduct) => (
             <Grid item xs={12} sm={6} md={4} key={product.id}>
               <Box
                 sx={{

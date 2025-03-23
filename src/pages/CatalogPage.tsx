@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Button,
 } from '@mui/material';
+import { addToSelected } from '../store/products';
 
 const CatalogPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +48,7 @@ const CatalogPage = () => {
 
   const handleAddToCart = (productId: number) => {
     console.log(productId);
+    dispatch(addToSelected(productId));
   };
 
   return (

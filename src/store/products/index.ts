@@ -14,12 +14,25 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     addToSelected: (state, { payload: selectedId }: PayloadAction<number>) => {
-      if (
-        !state.selectedProductsIds.find(
-          (cardProduct) => cardProduct.id === selectedId
-        )
-      ) {
-        state.selectedProductsIds.push({ id: selectedId, quantity: 1 });
+      const selectedProduct = state.selectedProductsIds.find(
+        (cardProduct) => cardProduct.id === selectedId
+      );
+      const product = state.products.find(
+        (product) => product.id === selectedId
+      );
+      if (product) {
+        if (!selectedProduct) {
+          state.selectedProductsIds.push({ ...product, quantity: 1 });
+        } else {
+          state.selectedProductsIds = state.selectedProductsIds.map(
+            (product) => {
+              if (selectedId === product.id) {
+                return { ...product, quantity: product.quantity + 1 };
+              }
+              return product;
+            }
+          );
+        }
       }
     },
     removeFromSelected: (
@@ -32,7 +45,7 @@ const productsSlice = createSlice({
     },
     changeQuantity: (
       state,
-      { payload: { id, quantity } }: PayloadAction<CardProduct>
+      { payload: { id, quantity } }: PayloadAction<{id: number, quantity: number}>
     ) => {
       state.selectedProductsIds = state.selectedProductsIds.map(
         (cardProduct) => {
