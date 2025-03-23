@@ -1,12 +1,22 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { CardProduct, Product, ProductsState } from './types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Product, ProductsState } from './types';
 import { fetchProducts } from '../../api/fetchProducts';
+
+const loadCartFromLocalStorage = () => {
+  const savedCart = localStorage.getItem('cart');
+  try {
+    return savedCart ? JSON.parse(savedCart) : [];
+  } catch {
+    return [];
+  }
+};
+
 
 const initialState: ProductsState = {
   products: [],
   status: 'idle',
   error: null,
-  selectedProductsIds: [],
+  selectedProductsIds: loadCartFromLocalStorage(),
 };
 
 const productsSlice = createSlice({
